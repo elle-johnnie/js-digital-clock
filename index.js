@@ -5,35 +5,37 @@ $(document).ready(function() {
         let s = time.getSeconds().toString().length == 1 ? '0' + time.getSeconds() : time.getSeconds();
         let m = time.getMinutes().toString().length == 1 ? '0' + time.getMinutes() : time.getMinutes();
         let h = time.getHours().toString().length == 1 ? '0' + time.getHours() : time.getHours();
-
+        const twentyFour = h + ' : ' + m + ' : ' + s;
+        const twelve = time.toLocaleString();
         const months = ['January', 'February', 'March', 'April', 'May',
             'June', 'July', 'August', 'September', 'October', 'November', 'December'];
         const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         let tz = time.toString().match(/([A-Z]+[\+-][0-9]+.*)/)[1];
 
+
         $('#clock').html('<p>' + h + ' : ' + m + ' : ' + s + '</p>');
         $('#day').html('<p>' + days[time.getDay()] + '</p>');
         $('#date').html('<p>' + months[time.getMonth()] + ' ' + time.getDate() + ', ' + time.getFullYear() + '</p>');
         $('#timezone').html('<p>' + tz + '</p>');
-        console.log(typeof h);
-        console.log(h > 15 && h <= 21);
-        console.log(h);
-        $('.clock').addClass(function(h) {
-            switch (h) {
-                case h >= 0 && h <= 6:
-                    return "too-early";
-                case h > 6 && h <= 10:
-                    return "morning";
-                case h >= 11 && h <= 15:
-                    return "noonish";
-                case h > 15 && h <= 21:
-                    return "evening";
-                case h > 21 && h < 24:
-                    return "night";
-                default:
-                    return "basic";
+        // console.log(typeof h);
+        // console.log(h > 15 && h <= 21);
+        // console.log(h);
+        $('.clock').addClass(function() {
+            let hour = new Date().getHours();
+            if (hour>= 0 && hour <= 6){
+                return "too-early";
+            } else if (hour > 6 && hour <= 10) {
+                return "morning";
+            } else if (hour > 10 && h <= 15) {
+                return "noonish";
+            } else if (hour > 15 && hour < 21) {
+                return "evening";
+            } else if (hour >= 21 && hour <= 24) {
+                return "night";
+            } else {
+                return "basic";
             }
-    });
+        })
 
 
     }, 1000);
@@ -64,10 +66,76 @@ $(document).ready(function() {
                 return nd.toLocaleString();
             }
 
-            $('#t2').html('<p class="bold-text"> Familiars </p><p>' + calcTime(-6) + '</p><p class="little"> GMT-0600(Central Standard Time) </p>');
-            $('#t3').html('<p class="bold-text"> The Future is Now </p><p>' + calcTime(+5.5) + '</p><p class="little"> GMT+0550(India Standard Time) </p>');
-            $('#t4').html('<p class="bold-text"> If I could turn back time...</p><p>' + calcTime(-12) + '</p><p class="little"> GMT-1200(International Date Line) </p>');
+            $('#t1').html('<div class="bold-text"><p>Familiars</p></div><div class="drop"><p>' + calcTime(-6) + '</p><p class="little"> GMT-0600(Central Standard Time) </p></div>');
+            $('#t2').html('<div class="bold-text"><p>The Future is NOW</p></div><div class="drop"><p>' + calcTime(+10) + '</p><p class="little"> GMT+1000(Papua New Guinea Time) </p></div>');
+            $('#t3').html('<div class="bold-text"><p>If I could turn back time...</p></div><div class="drop"><p>' + calcTime(-12) + '</p><p class="little"> GMT-1200(International Date Line) </p></div>');
             }, 1000);
+
+
+    $('#t1, #t2, #t3').on('mouseenter', event => {
+        $(event.currentTarget).addClass('clock-shadow, hvr-float-shadow');
+    }).on('mouseleave', event => {
+        $(event.currentTarget).removeClass('clock-shadow, hvr-float-shadow');
+    });
+
+
+    $('.clock').on('mouseenter', event => {
+        $(event.currentTarget).addClass('clock-shadow');
+    }).on('mouseleave', event => {
+        $(event.currentTarget).removeClass('clock-shadow');
+    });
+
+    // $('.c1').on('click', () => {
+    //     $('#clock').css("color", "blue");
+    // });
+    //
+    // $('.c2').on('click',() => {
+    //     $('#clock').css("color", "red");
+    // });
+    // $('.c3').on('click',() => {
+    //     $('#clock').css("color", "grey");
+    // });
+
+
+    $('.c1').on('click',() => {
+        $('.clock').removeClass("orange green");
+        $('.clock').toggleClass("aq");
+    });
+
+    $('.c2').on('click',() =>  {
+        $('.clock').removeClass("aq green");
+        $('.clock').toggleClass("orange");
+    });
+
+    $('.c3').on('click',() =>  {
+        $('.clock').removeClass("orange green");
+        $('.clock').toggleClass("green");
+    });
+
+    $('.la').click (function() {
+        ('#clock').removeClass("ra");
+        $('#clock').toggleClass("la");
+    });
+    $('.ra').click (function() {
+        ('#clock').removeClass("la");
+        $('#clock').toggleClass("ra");
+    });
+    // $('.hour-type').click (function() {
+    //     $('.clock').toggleClass("hours-disp");
+    // });
+
+    // $('#clock').toggle(function() {
+    //     $(this).html('<p>' + h + ' : ' + m + ' : ' + s + '</p>');
+    //     }, function () {
+    //     $(this).html('<p>' + time.toLocaleTimeString() + '</p>');
+    // });
+
+
+    // $('#showMore').toggle(function() {
+    //     $(this).text('Before');
+    // }, function() {
+    //     $(this).text('After');
+    // });
 
 
 
